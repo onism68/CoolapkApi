@@ -1,12 +1,12 @@
 package main
 
 import (
-	"coolapk/tools"
 	"fmt"
+	"github.com/onism68/CoolapkApi/Coolapk"
 )
 
 
 func main() {
-	b := tools.GetUid("酷安小编")
+	b := Coolapk.GetUid("酷安小编")
 	fmt.Println(b)
 }
