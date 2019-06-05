@@ -1,4 +1,4 @@
-package Coolapk
+package tools
 
 import (
 	"fmt"

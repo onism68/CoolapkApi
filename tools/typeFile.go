@@ -1,4 +1,4 @@
-package Coolapk
+package tools
 
 //struct里的变量大写才能外部可见！！！
 

@@ -1,8 +1,8 @@
-package Coolapk
+package tools
 
 import (
 	"encoding/json"
-	"strconv"
+	"fmt"
 	"strings"
 )
 
@@ -16,7 +16,7 @@ type Data1 struct {
 }
 
 //获取用户名的Uid
-func GetUid(s string) string {
+func GetUid(s string) (uid string, err error) {
 	url0 := "https://api.coolapk.com/v6/search?type=user&searchValue=*&page=1"
 	url := strings.Replace(url0, "*", s, 1)
 	b := CoolFetcher(url)
@@ -25,9 +25,9 @@ func GetUid(s string) string {
 	//fmt.Println(b1)
 	if len(b1.Data) > 0 {
 		uid := b1.Data[0].Uid
-		return uid
+		return uid, nil
 	} else {
-		return strconv.Itoa(10002)
+		return "",fmt.Errorf("出错了%s",err)
 	}
 
 }

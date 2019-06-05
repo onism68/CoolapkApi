@@ -2,23 +2,31 @@ package CoolapkApi
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/onism68/CoolapkApi/Coolapk"
+	"github.com/onism68/CoolapkApi/tools"
+	"log"
 )
 
 //获取用户Uid
-func GetUserUid(username string) {
-	b := Coolapk.GetUid(username)
-	fmt.Println(b)
+func GetUserUid(username string) (uid string, err error){
+	uid, err = tools.GetUid(username)
+	if err != nil {
+		log.Println(err)
+		return "", err
+	}
+	return uid, nil
 }
 
 //获取用户信息
-func GetUserData(username string) {
-	uid := Coolapk.GetUid(username)
+func GetUserData(username string) (userdata tools.CoolJsons, err error) {
+	uid, err := tools.GetUid(username)
+	if err != nil {
+		log.Println(err)
+		return tools.CoolJsons{}, err
+	}
 	//fmt.Println(uid)
 	url := "https://api.coolapk.com/v6/user/space?uid=" + uid
-	b := Coolapk.CoolFetcher(url)
-	b1 := Coolapk.CoolJsons{}
+	b := tools.CoolFetcher(url)
+	b1 := tools.CoolJsons{}
 	json.Unmarshal(b, &b1)
-	fmt.Println(b1)
+	return b1, nil
 }
