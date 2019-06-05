@@ -25,8 +25,8 @@ func GetUserData(username string) (userdata tools.CoolJsons, err error) {
 	}
 	//fmt.Println(uid)
 	url := "https://api.coolapk.com/v6/user/space?uid=" + uid
-	b := tools.CoolFetcher(url)
-	b1 := tools.CoolJsons{}
-	json.Unmarshal(b, &b1)
-	return b1, nil
+	data := tools.CoolFetcher(url)
+	userdata = tools.CoolJsons{}
+	json.Unmarshal(data, &username)
+	return userdata, nil
 }
