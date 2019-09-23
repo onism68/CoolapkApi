@@ -18,6 +18,30 @@ func base64Encode(data string) (string){
 	return base64.StdEncoding.EncodeToString([]byte(data))
 }
 
+func md5_hex_digest (str string ) (string){
+
+
+	data := []byte(str)
+	has := md5.Sum(data)
+	md5str1 := fmt.Sprintf("%x", has) //将[]byte转成16进制
+
+	return md5str1
+}
+
+func CoolApkToken () string {
+	a1 :=rand.Int()%100000000
+	//此处device_id 可以自行构造
+	var device_id string =  strconv.Itoa(a1) + "-0000-0000-0000-000000000000"
+	//时间稍微后移一点
+	timestamp := time.Now().Unix() + 100
+	timestamp_md5 := md5_hex_digest(strconv.FormatInt(timestamp,10))
+	salt := token1 + timestamp_md5 + "$" + device_id + "&" + package_name
+	saltEncoded := base64Encode(salt)
+	saltMd5 := md5_hex_digest(saltEncoded)
+	return saltMd5 + device_id + fmt.Sprintf("0x%x",timestamp)
+
+}
+
 //func base64Decode(data string) string {
 ////	d, err :=  base64.StdEncoding.DecodeString(data)
 ////	if err!= nil {
@@ -35,26 +59,3 @@ func base64Encode(data string) (string){
 //	}
 //	return revS
 //}
-
-func md5_hex_digest (str string ) (string){
-
-
-	data := []byte(str)
-	has := md5.Sum(data)
-	md5str1 := fmt.Sprintf("%x", has) //将[]byte转成16进制
-
-	return md5str1
-}
-
-func CoolApkToken () string {
-	a1 :=rand.Int()%100000000
-	var device_id string =  strconv.Itoa(a1) + "-0000-0000-0000-000000000000"
-	timestamp := time.Now().Unix() + 100
-	timestamp_md5 := md5_hex_digest(strconv.FormatInt(timestamp,10))
-	salt := token1 + timestamp_md5 + "$" + device_id + "&" + package_name
-	saltEncoded := base64Encode(salt)
-	saltMd5 := md5_hex_digest(saltEncoded)
-	return saltMd5 + device_id + fmt.Sprintf("0x%x",timestamp)
-
-}
-
