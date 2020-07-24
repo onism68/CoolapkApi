@@ -7,7 +7,7 @@ import (
 )
 
 //获取用户Uid
-func GetUserUid(username string) (uid string, err error){
+func GetUserUid(username string) (uid string, err error) {
 	uid, err = tools.GetUid(username)
 	if err != nil {
 		log.Println(err)
@@ -25,8 +25,23 @@ func GetUserData(username string) (userdata tools.CoolJsons, err error) {
 	}
 	//fmt.Println(uid)
 	url := "https://api.coolapk.com/v6/user/space?uid=" + uid
-	data := tools.CoolFetcher(url)
+	data, err := tools.CoolFetcher(url)
+	if err != nil {
+		return tools.CoolJsons{}, err
+	}
 	userdata = tools.CoolJsons{}
-	json.Unmarshal(data, &username)
+	err = json.Unmarshal(data, &username)
+	if err != nil {
+		return tools.CoolJsons{}, err
+	}
 	return userdata, nil
+}
+
+func GetTouTiao() (string, error) {
+	url := "https://api.coolapk.com/v6/main/indexV8"
+	data, err := tools.CoolFetcher(url)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
 }

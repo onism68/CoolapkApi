@@ -19,15 +19,21 @@ type Data1 struct {
 func GetUid(s string) (uid string, err error) {
 	url0 := "https://api.coolapk.com/v6/search?type=user&searchValue=*&page=1"
 	url := strings.Replace(url0, "*", s, 1)
-	b := CoolFetcher(url)
+	b, err := CoolFetcher(url)
+	if err != nil {
+		return "", nil
+	}
 	b1 := UserData{}
-	json.Unmarshal(b, &b1)
+	err = json.Unmarshal(b, &b1)
+	if err != nil {
+		return "", fmt.Errorf("出错了%s", err)
+	}
 	//fmt.Println(b1)
 	if len(b1.Data) > 0 {
 		uid := b1.Data[0].Uid
 		return uid, nil
 	} else {
-		return "",fmt.Errorf("出错了%s",err)
+		return "", fmt.Errorf("出错了%s", err)
 	}
 
 }
